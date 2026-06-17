@@ -769,49 +769,23 @@ function Nav({currentUser, onNav, page, onSearch, onWrite, onLogout}) {
   return (
     <nav style={{position:"sticky",top:0,zIndex:200,background:TH.navBg,backdropFilter:"blur(20px)",borderBottom:`1px solid ${TH.border}`,padding:"0 24px"}}>
       <div style={{maxWidth:1100,margin:"0 auto",display:"flex",alignItems:"center",height:64,gap:16,justifyContent:"space-between"}}>
-        
+
         {/* Left Logo and Brand */}
         <div style={{display:"flex",alignItems:"center",gap:10}}>
           <button onClick={()=>onNav("home")} style={{background:"none",border:"none",cursor:"pointer",display:"flex",alignItems:"center",padding:0}}>
-            <div style={{
-              width: 38,
-              height: 38,
-              borderRadius: 10,
-              background: TH.grad1,
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              boxShadow: "0 4px 14px rgba(108,79,232,0.3)",
-              marginRight: 10
-            }}>
+            <div style={{width:38,height:38,borderRadius:10,background:TH.grad1,display:"flex",alignItems:"center",justifyContent:"center",boxShadow:"0 4px 14px rgba(108,79,232,0.3)",marginRight:10}}>
               <span style={{fontSize:18}}>📖</span>
             </div>
-            <span style={{
-              fontFamily:"'Playfair Display', serif",
-              fontSize: 22,
-              fontWeight: 900,
-              color: TH.text,
-              letterSpacing: "-0.03em"
-            }}>
+            <span style={{fontFamily:"'Playfair Display', serif",fontSize:22,fontWeight:900,color:TH.text,letterSpacing:"-0.03em"}}>
               Narratica
             </span>
           </button>
-          <span style={{
-            fontSize: 9,
-            fontWeight: 800,
-            color: "#9C7FFF",
-            background: "rgba(108,79,232,0.15)",
-            border: "1px solid rgba(108,79,232,0.3)",
-            padding: "2px 8px",
-            borderRadius: 12,
-            letterSpacing: "0.1em",
-            fontFamily: "Inter, sans-serif"
-          }}>
+          <span style={{fontSize:9,fontWeight:800,color:"#9C7FFF",background:"rgba(108,79,232,0.15)",border:"1px solid rgba(108,79,232,0.3)",padding:"2px 8px",borderRadius:12,letterSpacing:"0.1em",fontFamily:"Inter, sans-serif"}}>
             STORIES
           </span>
         </div>
 
-        {/* Right side user section */}
+        {/* Right side */}
         <div style={{display:"flex",alignItems:"center",gap:16}}>
           {showSearch ? (
             <form onSubmit={handleSearch} style={{display:"flex",gap:6}}>
@@ -824,51 +798,14 @@ function Nav({currentUser, onNav, page, onSearch, onWrite, onLogout}) {
           {currentUser ? (
             <div style={{display:"flex",alignItems:"center",gap:14}}>
               <div style={{display:"flex",alignItems:"center",gap:8,cursor:"pointer"}} onClick={()=>onNav("profile",currentUser.id)}>
-                <div style={{
-                  width: 32,
-                  height: 32,
-                  borderRadius: "50%",
-                  background: currentUser.coverGrad || "linear-gradient(135deg,#2ecc71,#1abc9c)",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  fontSize: 12,
-                  fontWeight: 700,
-                  color: "#fff",
-                  fontFamily: "Inter, sans-serif",
-                  boxShadow: "0 2px 10px rgba(0,0,0,0.3)"
-                }}>
-                  {currentUser.avatar || "U"}
+                <div style={{width:32,height:32,borderRadius:"50%",background:currentUser.coverGrad||"linear-gradient(135deg,#2ecc71,#1abc9c)",display:"flex",alignItems:"center",justifyContent:"center",fontSize:12,fontWeight:700,color:"#fff",fontFamily:"Inter, sans-serif",boxShadow:"0 2px 10px rgba(0,0,0,0.3)"}}>
+                  {currentUser.avatar||"U"}
                 </div>
-                <span style={{
-                  fontSize: 13,
-                  fontWeight: 700,
-                  color: TH.text,
-                  fontFamily: "Inter, sans-serif",
-                  letterSpacing: "0.05em",
-                  textTransform: "uppercase"
-                }}>
-                  {currentUser.name ? currentUser.name.split(" ")[0] : "USER"}
+                <span style={{fontSize:13,fontWeight:700,color:TH.text,fontFamily:"Inter, sans-serif",letterSpacing:"0.05em",textTransform:"uppercase"}}>
+                  {currentUser.name?currentUser.name.split(" ")[0]:"USER"}
                 </span>
               </div>
-
-              <button 
-                onClick={onLogout} 
-                style={{
-                  background: "rgba(220,50,50,0.05)",
-                  border: "1px solid rgba(220,50,50,0.25)",
-                  borderRadius: 20,
-                  padding: "6px 14px",
-                  cursor: "pointer",
-                  color: "#ff6060",
-                  fontSize: 12,
-                  fontWeight: 600,
-                  fontFamily: "Inter, sans-serif",
-                  display: "flex",
-                  alignItems: "center",
-                  gap: 6,
-                  transition: "all 0.15s"
-                }}
+              <button onClick={onLogout} style={{background:"rgba(220,50,50,0.05)",border:"1px solid rgba(220,50,50,0.25)",borderRadius:20,padding:"6px 14px",cursor:"pointer",color:"#ff6060",fontSize:12,fontWeight:600,fontFamily:"Inter, sans-serif",display:"flex",alignItems:"center",gap:6,transition:"all 0.15s"}}
                 onMouseEnter={e=>e.currentTarget.style.background="rgba(220,50,50,0.1)"}
                 onMouseLeave={e=>e.currentTarget.style.background="rgba(220,50,50,0.05)"}
               >
@@ -882,13 +819,13 @@ function Nav({currentUser, onNav, page, onSearch, onWrite, onLogout}) {
             </div>
           )}
         </div>
-
       </div>
     </nav>
   );
 }
 
 // ── Home / Feed ───────────────────────────────────────────────────────────────
+
 function HomePage({state, currentUser, dispatch, onNav}) {
   const [cat, setCat] = useState("all");
   const [sort, setSort] = useState("latest");
@@ -906,77 +843,246 @@ function HomePage({state, currentUser, dispatch, onNav}) {
     });
 
   const featured = posts.filter(p=>p.featured).slice(0,2);
+  const totalLikes = posts.reduce((sum, p) => sum + p.likes, 0);
+  const likesLabel = totalLikes >= 1000 ? `${(totalLikes/1000).toFixed(1)}K` : totalLikes;
 
+  // ── SIGNED-IN VIEW ──────────────────────────────────────────────────────────
+  if (currentUser) {
+    const hour = new Date().getHours();
+    const greeting = hour < 12 ? "Good morning" : hour < 17 ? "Good afternoon" : "Good evening";
+    const firstName = currentUser.name ? currentUser.name.split(" ")[0] : "there";
+    const myPosts = posts.filter(p => p.userId === currentUser.id);
+    const myLikes = posts.filter(p => p.likedBy.includes(currentUser.id));
+    const mySaved = posts.filter(p => p.bookmarkedBy.includes(currentUser.id));
+    const suggestions = users.filter(u => u.id !== currentUser.id && !currentUser.following.includes(u.id)).slice(0, 3);
+
+    return (
+      <div style={{maxWidth:1100,margin:"0 auto",padding:"28px 20px 100px"}}>
+
+        {/* ── Welcome Banner ── */}
+        <div style={{
+          background: "linear-gradient(135deg, rgba(108,79,232,0.18) 0%, rgba(232,79,160,0.12) 100%)",
+          border: `1px solid rgba(108,79,232,0.25)`,
+          borderRadius: 24,
+          padding: "28px 32px",
+          marginBottom: 32,
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
+          gap: 20,
+          flexWrap: "wrap",
+          position: "relative",
+          overflow: "hidden"
+        }}>
+          <div style={{position:"absolute",top:-40,right:80,width:200,height:200,borderRadius:"50%",background:"rgba(108,79,232,0.12)",filter:"blur(60px)",pointerEvents:"none"}}/>
+          <div style={{position:"absolute",bottom:-60,right:-20,width:180,height:180,borderRadius:"50%",background:"rgba(232,79,160,0.1)",filter:"blur(60px)",pointerEvents:"none"}}/>
+
+          <div style={{position:"relative"}}>
+            <div style={{fontSize:12,color:TH.teal,fontFamily:"Inter,sans-serif",fontWeight:700,letterSpacing:"0.1em",marginBottom:6,textTransform:"uppercase"}}>
+              ✦ {greeting}
+            </div>
+            <h2 style={{fontFamily:"'Playfair Display',serif",fontSize:"clamp(24px,4vw,36px)",fontWeight:900,color:TH.text,margin:"0 0 8px",letterSpacing:"-0.02em"}}>
+              Welcome back, <span style={{background:TH.grad1,WebkitBackgroundClip:"text",WebkitTextFillColor:"transparent"}}>{firstName}!</span>
+            </h2>
+            <p style={{color:TH.muted,fontFamily:"Inter,sans-serif",fontSize:14,margin:0}}>
+              {myPosts.length === 0
+                ? "You haven't written yet — your first story is waiting."
+                : `You've written ${myPosts.length} ${myPosts.length===1?"story":"stories"} · ${myLikes.length} liked · ${mySaved.length} saved`}
+            </p>
+          </div>
+
+          <div style={{display:"flex",gap:10,flexWrap:"wrap",position:"relative"}}>
+            <button onClick={()=>onNav("write")} style={{
+              background:TH.grad1,color:"#fff",border:"none",borderRadius:30,padding:"10px 22px",
+              fontSize:13,fontWeight:700,fontFamily:"Inter,sans-serif",cursor:"pointer",
+              display:"flex",alignItems:"center",gap:7,
+              boxShadow:"0 6px 20px rgba(108,79,232,0.4)",transition:"transform 0.15s"
+            }}
+            onMouseEnter={e=>e.currentTarget.style.transform="scale(1.04)"}
+            onMouseLeave={e=>e.currentTarget.style.transform="scale(1)"}
+            >
+              ✍️ Write a Story
+            </button>
+            <button onClick={()=>onNav("profile",currentUser.id)} style={{
+              background:"rgba(255,255,255,0.06)",color:TH.text,border:`1px solid ${TH.border2}`,
+              borderRadius:30,padding:"10px 20px",fontSize:13,fontWeight:600,
+              fontFamily:"Inter,sans-serif",cursor:"pointer",
+              display:"flex",alignItems:"center",gap:7,transition:"background 0.15s"
+            }}
+            onMouseEnter={e=>e.currentTarget.style.background="rgba(255,255,255,0.1)"}
+            onMouseLeave={e=>e.currentTarget.style.background="rgba(255,255,255,0.06)"}
+            >
+              👤 My Profile
+            </button>
+          </div>
+        </div>
+
+        {/* ── Quick Stats Row ── */}
+        <div style={{display:"grid",gridTemplateColumns:"repeat(4,1fr)",gap:12,marginBottom:36}}>
+          {[
+            { icon:"✍️", val: users.length, lbl:"Writers", color:TH.accent },
+            { icon:"📖", val: posts.length, lbl:"Stories", color:TH.teal },
+            { icon:"💙", val: likesLabel, lbl:"Total Likes", color:TH.pink },
+            { icon:"💬", val: state.comments.length, lbl:"Comments", color:TH.gold },
+          ].map((s,i)=>(
+            <div key={i} style={{
+              background:TH.card,border:`1px solid ${TH.border}`,borderRadius:16,
+              padding:"18px 16px",textAlign:"center",
+              borderBottom:`3px solid ${s.color}`,
+              boxShadow:"0 2px 16px rgba(0,0,0,0.2)"
+            }}>
+              <div style={{fontSize:22,marginBottom:6}}>{s.icon}</div>
+              <div style={{fontSize:26,fontWeight:900,fontFamily:"'Playfair Display',serif",color:TH.text}}>{s.val}</div>
+              <div style={{fontSize:10,color:TH.muted,fontFamily:"Inter,sans-serif",fontWeight:700,letterSpacing:"0.05em",textTransform:"uppercase",marginTop:2}}>{s.lbl}</div>
+            </div>
+          ))}
+        </div>
+
+        {/* ── Two-Column Layout: Feed + Sidebar ── */}
+        <div style={{display:"grid",gridTemplateColumns:"1fr 300px",gap:28,alignItems:"start"}}>
+
+          {/* ── Left: Feed ── */}
+          <div>
+            {featured.length > 0 && (
+              <div style={{marginBottom:28}}>
+                <div style={{fontSize:11,fontWeight:700,letterSpacing:"0.12em",color:TH.gold,fontFamily:"Inter,sans-serif",marginBottom:12,textTransform:"uppercase",display:"flex",alignItems:"center",gap:6}}>
+                  <span style={{display:"inline-block",width:18,height:2,background:TH.gold,borderRadius:2}}/>
+                  ⭐ Featured Stories
+                </div>
+                <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fit,minmax(280px,1fr))",gap:14}}>
+                  {featured.map(p=><PostCard key={p.id} post={p} users={users} currentUser={currentUser} dispatch={dispatch} onNav={onNav}/>)}
+                </div>
+              </div>
+            )}
+
+            <div style={{display:"flex",gap:8,marginBottom:20,flexWrap:"wrap",alignItems:"center"}}>
+              <div style={{display:"flex",gap:6,flexWrap:"wrap",flex:1}}>
+                <button onClick={()=>setCat("all")} style={{padding:"6px 16px",borderRadius:20,border:`1px solid ${cat==="all"?TH.accent:TH.border}`,background:cat==="all"?TH.accentBg:"transparent",color:cat==="all"?TH.accentL:TH.muted,fontSize:12,fontWeight:600,fontFamily:"Inter,sans-serif",cursor:"pointer"}}>All</button>
+                {Object.entries(CATS).map(([k,v])=>(
+                  <button key={k} onClick={()=>setCat(k)} style={{padding:"6px 14px",borderRadius:20,border:`1px solid ${cat===k?v.color:TH.border}`,background:cat===k?v.color+"20":"transparent",color:cat===k?v.color:TH.muted,fontSize:12,fontWeight:600,fontFamily:"Inter,sans-serif",cursor:"pointer"}}>
+                    {v.icon} {v.label}
+                  </button>
+                ))}
+              </div>
+              <select value={sort} onChange={e=>setSort(e.target.value)} style={{padding:"6px 12px",borderRadius:10,border:`1px solid ${TH.border2}`,background:TH.card2,color:TH.text,fontSize:12,fontFamily:"Inter,sans-serif",cursor:"pointer"}}>
+                <option value="latest">Latest</option>
+                <option value="popular">Most Liked</option>
+                <option value="following">Following</option>
+              </select>
+            </div>
+
+            <div style={{display:"grid",gap:14}}>
+              {filtered.length === 0 ? (
+                <div style={{textAlign:"center",padding:"60px 20px",color:TH.muted,fontFamily:"Inter,sans-serif"}}>
+                  <div style={{fontSize:40,marginBottom:12}}>📭</div>
+                  <div style={{fontSize:16,fontWeight:600,marginBottom:8}}>No stories here yet</div>
+                  <div style={{fontSize:14}}>Try a different category or be the first to write one!</div>
+                </div>
+              ) : filtered.map(p=>(
+                <PostCard key={p.id} post={p} users={users} currentUser={currentUser} dispatch={dispatch} onNav={onNav}/>
+              ))}
+            </div>
+          </div>
+
+          {/* ── Right Sidebar ── */}
+          <div style={{display:"flex",flexDirection:"column",gap:20}}>
+
+            <div style={{background:TH.card,border:`1px solid ${TH.border}`,borderRadius:18,padding:20}}>
+              <div style={{fontSize:11,fontWeight:700,letterSpacing:"0.1em",color:TH.muted,fontFamily:"Inter,sans-serif",marginBottom:14,textTransform:"uppercase"}}>My Activity</div>
+              {[
+                { icon:"📖", label:"My Stories", val:myPosts.length, action:()=>onNav("profile",currentUser.id) },
+                { icon:"💙", label:"Liked Stories", val:myLikes.length, action:()=>onNav("profile",currentUser.id) },
+                { icon:"🔖", label:"Saved", val:mySaved.length, action:()=>onNav("bookmarks") },
+              ].map((item,i)=>(
+                <button key={i} onClick={item.action} style={{
+                  width:"100%",background:"none",border:"none",cursor:"pointer",
+                  display:"flex",alignItems:"center",justifyContent:"space-between",
+                  padding:"10px 0",borderBottom:i<2?`1px solid ${TH.border}`:"none",
+                  color:TH.text
+                }}>
+                  <span style={{fontFamily:"Inter,sans-serif",fontSize:13,color:TH.muted,display:"flex",alignItems:"center",gap:8}}>
+                    {item.icon} {item.label}
+                  </span>
+                  <span style={{fontFamily:"'Playfair Display',serif",fontSize:18,fontWeight:900,color:TH.text}}>{item.val}</span>
+                </button>
+              ))}
+            </div>
+
+            {suggestions.length > 0 && (
+              <div style={{background:TH.card,border:`1px solid ${TH.border}`,borderRadius:18,padding:20}}>
+                <div style={{fontSize:11,fontWeight:700,letterSpacing:"0.1em",color:TH.muted,fontFamily:"Inter,sans-serif",marginBottom:14,textTransform:"uppercase"}}>Writers to Follow</div>
+                {suggestions.map((u,i)=>{
+                  const uPosts = posts.filter(p=>p.userId===u.id).length;
+                  return (
+                    <div key={u.id} style={{
+                      display:"flex",alignItems:"center",gap:10,
+                      padding:"10px 0",borderBottom:i<suggestions.length-1?`1px solid ${TH.border}`:"none",
+                      cursor:"pointer"
+                    }} onClick={()=>onNav("profile",u.id)}>
+                      <div style={{width:36,height:36,borderRadius:"50%",background:avC(u.name),display:"flex",alignItems:"center",justifyContent:"center",fontSize:13,fontWeight:700,color:"#fff",flexShrink:0,fontFamily:"Inter,sans-serif"}}>
+                        {u.avatar}
+                      </div>
+                      <div style={{flex:1,minWidth:0}}>
+                        <div style={{fontFamily:"Inter,sans-serif",fontSize:13,fontWeight:600,color:TH.text,display:"flex",alignItems:"center",gap:4}}>
+                          {u.name.split(" ")[0]}
+                          {u.verified && <span style={{color:TH.accent,fontSize:10}}>✓</span>}
+                        </div>
+                        <div style={{fontSize:11,color:TH.muted,fontFamily:"Inter,sans-serif"}}>{uPosts} {uPosts===1?"story":"stories"}</div>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            )}
+
+            <div style={{
+              background:"linear-gradient(135deg,rgba(108,79,232,0.15),rgba(61,214,192,0.1))",
+              border:`1px solid rgba(108,79,232,0.2)`,borderRadius:18,padding:20
+            }}>
+              <div style={{fontSize:16,marginBottom:8}}>✨</div>
+              <div style={{fontFamily:"'Playfair Display',serif",fontSize:15,fontWeight:700,color:TH.text,marginBottom:6}}>Today's Prompt</div>
+              <div style={{fontSize:12,color:TH.muted,fontFamily:"Inter,sans-serif",lineHeight:1.6,marginBottom:14}}>
+                "Write about a person who changed your life in under 300 words."
+              </div>
+              <button onClick={()=>onNav("write")} style={{
+                background:TH.grad2,color:"#fff",border:"none",borderRadius:20,
+                padding:"8px 18px",fontSize:12,fontWeight:700,fontFamily:"Inter,sans-serif",
+                cursor:"pointer",width:"100%",transition:"opacity 0.15s"
+              }}
+              onMouseEnter={e=>e.currentTarget.style.opacity="0.85"}
+              onMouseLeave={e=>e.currentTarget.style.opacity="1"}
+              >
+                Start Writing →
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // ── LOGGED-OUT / LANDING VIEW ────────────────────────────────────────────────
   return (
     <div style={{maxWidth:1100,margin:"0 auto",padding:"32px 20px"}}>
-      {/* Hero */}
       <div style={{textAlign:"left",marginBottom:40,padding:"32px 0 20px"}}>
-        {/* Dynamic Stats Badge */}
-        {(() => {
-          const totalLikes = posts.reduce((sum, p) => sum + p.likes, 0);
-          const likesLabel = totalLikes >= 1000 ? `${(totalLikes/1000).toFixed(1)}K` : totalLikes;
-          return (
-            <div style={{
-              display: "inline-flex",
-              alignItems: "center",
-              padding: "6px 14px",
-              borderRadius: 20,
-              border: `1px solid rgba(108,79,232,0.25)`,
-              background: "rgba(108,79,232,0.08)",
-              color: "#3DD6C0",
-              fontSize: 11,
-              fontWeight: 700,
-              fontFamily: "Inter, sans-serif",
-              letterSpacing: "0.06em",
-              marginBottom: 24
-            }}>
-              <span style={{
-                width: 6,
-                height: 6,
-                borderRadius: "50%",
-                background: "#3DD6C0",
-                display: "inline-block",
-                marginRight: 8,
-                boxShadow: "0 0 8px #3DD6C0"
-              }}></span>
-              {users.length} WRITERS · {posts.length} STORIES · {likesLabel} LIKES
-            </div>
-          );
-        })()}
-
-        {/* Cursive italic heading */}
-        <h1 style={{
-          margin: "0 0 20px",
-          fontSize: "clamp(42px, 7vw, 76px)",
-          fontWeight: 900,
-          fontFamily: "'Playfair Display', serif",
-          lineHeight: 1.1,
-          color: TH.text,
-          letterSpacing: "-0.03em"
+        <div style={{
+          display:"inline-flex",alignItems:"center",padding:"6px 14px",borderRadius:20,
+          border:`1px solid rgba(108,79,232,0.25)`,background:"rgba(108,79,232,0.08)",
+          color:"#3DD6C0",fontSize:11,fontWeight:700,fontFamily:"Inter,sans-serif",
+          letterSpacing:"0.06em",marginBottom:24
         }}>
+          <span style={{width:6,height:6,borderRadius:"50%",background:"#3DD6C0",display:"inline-block",marginRight:8,boxShadow:"0 0 8px #3DD6C0"}}/>
+          {users.length} WRITERS · {posts.length} STORIES · {likesLabel} LIKES
+        </div>
+
+        <h1 style={{margin:"0 0 20px",fontSize:"clamp(42px,7vw,76px)",fontWeight:900,fontFamily:"'Playfair Display',serif",lineHeight:1.1,color:TH.text,letterSpacing:"-0.03em"}}>
           Stories that
-          <span style={{
-            display: "block",
-            fontStyle: "italic",
-            background: "linear-gradient(90deg, #9C7FFF, #E84FA0)",
-            WebkitBackgroundClip: "text",
-            WebkitTextFillColor: "transparent",
-            fontWeight: 900,
-            fontFamily: "'Playfair Display', Lora, serif",
-            marginTop: 4
-          }}>
+          <span style={{display:"block",fontStyle:"italic",background:"linear-gradient(90deg,#9C7FFF,#E84FA0)",WebkitBackgroundClip:"text",WebkitTextFillColor:"transparent",fontWeight:900,fontFamily:"'Playfair Display',Lora,serif",marginTop:4}}>
             stay with you.
           </span>
         </h1>
 
-        <p style={{
-          fontSize: 16,
-          color: "#8880AA",
-          fontFamily: "Inter, sans-serif",
-          maxWidth: 640,
-          lineHeight: 1.6,
-          margin: "20px 0 28px 0"
-        }}>
+        <p style={{fontSize:16,color:"#8880AA",fontFamily:"Inter,sans-serif",maxWidth:640,lineHeight:1.6,margin:"20px 0 28px 0"}}>
           Narratica is a home for biopics, short fiction, science deep-dives, and travel dispatches — written by real people, readable in 21 languages, and discussed by a community that actually reads.
         </p>
 
