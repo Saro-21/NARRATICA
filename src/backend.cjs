@@ -10,6 +10,10 @@ const DB_FILE = path.join(__dirname, 'db.json');
 app.use(cors());
 app.use(express.json());
 
+// Serve static assets from the Vite frontend build folder
+const distPath = path.join(__dirname, '../dist');
+app.use(express.static(distPath));
+
 // ── Seed Data ─────────────────────────────────────────────────────────────────
 const SEED_USERS = [
   { id:1, name:"Priya Shankar",  username:"priya_writes", email:"priya@narratica.io", password:"demo123",
@@ -497,6 +501,14 @@ app.delete('/api/comments/:id', (req, res) => {
   db.comments.splice(commentIndex, 1);
   writeDb(db);
   res.json({ message: 'Comment deleted successfully' });
+});
+
+// Wildcard route to serve React's index.html for client-side routing
+app.get('*', (req, res) => {
+  if (req.path.startsWith('/api/')) {
+    return res.status(404).json({ error: 'API route not found' });
+  }
+  res.sendFile(path.join(__dirname, '../dist/index.html'));
 });
 
 // ── Start Server ──────────────────────────────────────────────────────────────
